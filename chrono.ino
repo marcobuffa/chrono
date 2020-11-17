@@ -2,6 +2,7 @@
 #include <dht_nonblocking.h>
 #include "time.h"
 #include "room.h"
+#include "program.h"
 #include "isr.h"
 #include "HWsettings.h"
 #include "SWsettings.h"
@@ -9,17 +10,27 @@
 //global variables :-@
 int refresh = 1;
 int dots = 1;
+int actPset = 0;
+int actDWset = 1;
 enum mode actMode = STD;
 enum set toSet = HOUR;
+enum progSet toProg = ENABLED;
+datetype now{30, 59, 15, 12, 4, 11, 2020}; //initial date (guess why...)
+onInterval interval[7][3] = { //start, stop, dw, temp, enabled
+            {{32400, 36000, 1, 19, 1},{ 39600, 43200, 1, 19, 1},{ 46800, 50400, 1, 19, 1}},
+            {{32400, 36000, 2, 19, 1},{ 39600, 43200, 2, 19, 1},{ 46800, 50400, 2, 19, 1}},
+            {{32400, 36000, 3, 19, 1},{ 39600, 43200, 3, 19, 1},{ 46800, 50400, 3, 19, 1}},
+            {{32400, 36000, 4, 19, 1},{ 39600, 43200, 4, 19, 1},{ 46800, 50400, 4, 19, 1}},
+            {{32400, 36000, 5, 19, 1},{ 39600, 43200, 5, 19, 1},{ 46800, 50400, 5, 19, 1}},
+            {{32400, 36000, 6, 19, 1},{ 39600, 43200, 6, 19, 1},{ 46800, 50400, 6, 19, 1}},
+            {{32400, 36000, 7, 19, 1},{ 39600, 43200, 7, 19, 1},{ 46800, 50400, 7, 19, 1}}        
+}; //ON intervals array (7 days x 3 intervals each days)
 
 //instantiate display
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 //instantiate room sensor
 DHT_nonblocking dht_sensor(dhtData, dhtType);
-
-//initial date (guess why...)
-date now{30, 59, 15, 12, 4, 11, 2020};
 
 //------------------------
 //room measurement routine
@@ -33,7 +44,7 @@ void measureRoom(float *temperature, float *humidity)
       timestamp = millis();
 
 #ifdef SERIALDEBUG
-      Serial.println("New room data!");
+      //Serial.println("New room data!");
 #endif
     }
   }
@@ -69,13 +80,20 @@ void ISRMenuButton(){
   if(micros() - last >= DEBOUNCE) {
     last = micros();
 
-#ifdef SERIALDEBUG
-    Serial.println("ISRMenuButton!");
-#endif
-
     refresh = 1; //set display to be updated
 
-    mainMenuFSM(&actMode, &toSet); //navigate through modes of operation and date/time setting
+    mainMenuFSM(&actMode, &toSet, &toProg); //navigate through modes of operation and date/time setting
+    
+#ifdef SERIALDEBUG
+    Serial.println("ISRMenuButton!");
+    Serial.print("actPset = ");
+    Serial.print(actPset);
+    Serial.print(" - actDWset = ");
+    Serial.print(actDWset);
+    Serial.print(" - toProg = ");
+    Serial.println(toProg);
+#endif
+
   }
 }
 
@@ -115,7 +133,8 @@ void ISRAuxButton(){
 void loop() {
   float temperature, humidity;
   static unsigned long timestamp = millis();
-  char time[16], date[16], r[8];
+  char time[16], date[16], r[8], program[16], dw[8];
+  datetype setStart, setStop;
 
   //try to get room measurement
   measureRoom(&temperature, &humidity);
@@ -134,19 +153,10 @@ void loop() {
   if (refresh){
 
 #ifdef SERIALDEBUG
-    Serial.println("Refresh!");
-    Serial.println(time2sec(&now));
+    //Serial.println("Refresh!");
 #endif
 
     refresh = 0; //set display just updated
-    
-    formatTime(time, now.h, now.m, now.s, dots); //format time string
-    lcd.setCursor(11, 0); //set display position
-    lcd.print(time); //print time
-    
-    formatDate(date, now.y, now.M, now.d, now.dw, dots); //format date string
-    lcd.setCursor(0, 1); //set display position
-    lcd.print(date); //print date
 
     //check what to do now (depending on actual operating mode)
     switch (actMode) {
@@ -156,18 +166,36 @@ void loop() {
         formatRoom(r, temperature, humidity); //format room measurement string
         lcd.setCursor(0, 0); //set display position
         lcd.print(r); //print room measurement
+        formatTime(time, now.h, now.m, now.s, dots); //format time string
+        lcd.setCursor(11, 0); //set display position
+        lcd.print(time); //print time
+        formatDate(date, now.y, now.M, now.d, now.dw, dots); //format date string
+        lcd.setCursor(0, 1); //set display position
+        lcd.print(date); //print date
         break;
 
       //date & time setting mode
       case SETTIME:
         lcd.setCursor(0, 0); //set display position
         lcd.print("Set d/o   "); //print date & time setting string
+        formatTime(time, now.h, now.m, now.s, dots); //format time string
+        lcd.setCursor(11, 0); //set display position
+        lcd.print(time); //print time
+        formatDate(date, now.y, now.M, now.d, now.dw, dots); //format date string
+        lcd.setCursor(0, 1); //set display position
+        lcd.print(date); //print date
         break;
 
       //chrono programming mode
       case SETPROG:
+        sec2time(&setStart, interval[actDWset][actPset].start);
+        sec2time(&setStop, interval[actDWset][actPset].stop);
         lcd.setCursor(0, 0); //set display position
-        lcd.print("Prog      "); //print chrono programming string
+        sprintf(program, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
+        lcd.print(program); //print chrono programming string
+        formatDW(dw, actDWset);
+        lcd.setCursor(0, 1); //set display position
+        lcd.print(dw);
         break;
       
       default:

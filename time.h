@@ -16,13 +16,14 @@ typedef struct {
   int dw;
   int M;
   int y;
-} date;
+} datetype;
 
 void formatTime(char *t, int h, int m, int s, int dots);
 void formatDate(char *t, int y, int M, int d, int dw, int dots);
-void runCalendar(date *now);
-long int time2sec (date *now);
-void sec2time (date *now, long int s);
+void runCalendar(datetype *now);
+long int time2sec (datetype *now);
+void sec2time (datetype *now, long int s);
+void formatDW(char *t, int dw);
 
 #endif //TIME_H_INCLUDED
 

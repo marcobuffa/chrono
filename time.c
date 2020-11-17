@@ -1,7 +1,9 @@
 #include "time.h"
 #include "SWsettings.h"
+#include "program.h"
 
 extern enum set toSet;
+extern enum set toProg;
 extern enum mode actMode;
 const char dwn[7][3] = {DAY1, DAY2, DAY3, DAY4, DAY5, DAY6, DAY7};
 
@@ -76,7 +78,7 @@ void formatDate(char *t, int y, int M, int d, int dw, int dots){
 //main clock/calendar update (to be called exactly one time per second -> no RTC, be precise!)
 //Yes, I know this is a bunch of bad code -> need time to rewrite it better
 //--------------------------------------------------------------------------------------------
-void runCalendar(date *now){
+void runCalendar(datetype *now){
   int pos=0;
 
   now->s++; //update seconds
@@ -126,18 +128,26 @@ void runCalendar(date *now){
 //-----------------------------------------------------------
 //time of the day -> seconds from midnight conversion routine
 //-----------------------------------------------------------
-long int time2sec (date *now) {
+long int time2sec (datetype *now) {
   return ((long)3600*now->h + (long)60*now->m + now->s);
 }
 
 //-----------------------------------------------------------
 //seconds from midnight -> time of the day conversion routine
 //-----------------------------------------------------------
-void sec2time (date *now, long int s) {
+void sec2time (datetype *now, long int s) {
   long int t;
   now->h = s/(long)3600;
   t = s%(long)3600;
   now->m = t/(long)60;
   now->s = t%(long)60;
+  return;
+}
+
+//-------------------------------------
+//day of week string formatting routine
+//-------------------------------------
+void formatDW(char *t, int dw){
+  sprintf(t, "%c%c%c", dwn[dw-1][0], dwn[dw-1][1], dwn[dw-1][2]); //normal formatting with no flash
   return;
 }

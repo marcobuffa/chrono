@@ -1,10 +1,16 @@
 #include "time.h"
+#include "program.h"
 
-void mainMenuFSM(enum mode *actMode, enum set *toSet) {
+extern int actPset;
+extern int actDWset;
+
+void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
   switch (*actMode) {
+    
     case STD:
       *actMode = SETTIME;
       break;
+      
     case SETTIME:
       switch (*toSet) {
         case HOUR:
@@ -31,16 +37,54 @@ void mainMenuFSM(enum mode *actMode, enum set *toSet) {
           break;
       }
       break;
+      
     case SETPROG:
-      *actMode = STD;
+      switch (*toProg) {
+      case ENABLED:
+          *toProg = STARTHOUR;
+          break;
+        case STARTHOUR:
+          *toProg = STARTMINUTE;
+          break;          
+        case STARTMINUTE:
+          *toProg = STOPHOUR;
+          break;
+        case STOPHOUR:
+          *toProg = STOPMINUTE;
+          break;
+        case STOPMINUTE:
+          *toProg = WEEKDAY;
+          break;
+        case WEEKDAY:
+          *toProg = TEMP;
+          break;
+        case TEMP:
+          *toProg = ENABLED;
+          if (actPset<2){
+            actPset++;
+          } else {
+            actPset=0;
+            if (actDWset<7){
+              actDWset++;
+            } else {
+              actDWset=1;
+              *actMode = STD;
+            }
+          }
+          break;
+        default:
+          *toProg = ENABLED;
+          break;
+      }
       break;
+      
     default:
       *actMode = STD;
       break;
   }
 }
 
-void setTimeSwitch(enum set *toSet, date *now) {
+void setTimeSwitch(enum set *toSet, datetype *now) {
   int pos=0;
   
   switch (*toSet) {
