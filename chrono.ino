@@ -135,6 +135,7 @@ void loop() {
 
 #ifdef SERIALDEBUG
     Serial.println("Refresh!");
+    Serial.println(time2sec(&now));
 #endif
 
     refresh = 0; //set display just updated

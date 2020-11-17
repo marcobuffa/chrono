@@ -18,6 +18,8 @@ typedef struct {
 void formatTime(char *t, int h, int m, int s, int dots);
 void formatDate(char *t, int y, int M, int d, int dw, int dots);
 void runCalendar(date *now);
+long int time2sec (date *now);
+void sec2time (date *now, long int s);
 
 #ifdef __cplusplus
 } // extern "C"

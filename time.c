@@ -122,3 +122,22 @@ void runCalendar(date *now){
     }
   }
 }
+
+//-----------------------------------------------------------
+//time of the day -> seconds from midnight conversion routine
+//-----------------------------------------------------------
+long int time2sec (date *now) {
+  return ((long)3600*now->h + (long)60*now->m + now->s);
+}
+
+//-----------------------------------------------------------
+//seconds from midnight -> time of the day conversion routine
+//-----------------------------------------------------------
+void sec2time (date *now, long int s) {
+  long int t;
+  now->h = s/(long)3600;
+  t = s%(long)3600;
+  now->m = t/(long)60;
+  now->s = t%(long)60;
+  return;
+}
