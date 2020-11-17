@@ -66,7 +66,7 @@ void setup() {
 void ISRMenuButton(){
   static unsigned long last;
   
-  if(micros() - last >= debounce * 1000) {
+  if(micros() - last >= DEBOUNCE) {
     last = micros();
 
 #ifdef SERIALDEBUG
@@ -85,7 +85,7 @@ void ISRMenuButton(){
 void ISRAuxButton(){
   static unsigned long last;
   
-  if(micros() - last >= debounce * 1000) {
+  if(micros() - last >= DEBOUNCE) {
     last = micros();
 
 #ifdef SERIALDEBUG
