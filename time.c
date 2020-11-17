@@ -90,19 +90,23 @@ void runCalendar(date *now){
         now->d++; //update day
         now->dw++; //update week day
         now->dw=now->dw > 7 ? 1 : now->dw; //if weekday over 7, reset week day
-        if (now->M==2){ //if february
-          if ((now->y % 4)==0){ //if leap year
-            pos=now->d > 29 ? 2 : pos; //mark for month change after 29 days
-          } else { //if normal year
-            pos=now->d > 28 ? 2 : pos; //mark for month change after 28 days
-          }
-        } else { //if not february
-          if ((now->M==1) || (now->M==3) || (now->M==5) || (now->M==7)
-                || (now->M==8) || (now->M==10) || (now->M==12)){ //if 31-days month
-            pos=now->d > 31 ? 2 : pos; //mark for month change after 31 days
-          } else { //if 30-days month
+        switch (now->M){
+          case 2: //febrary
+            if ((now->y % 4)==0){ //if leap year
+              pos=now->d > 29 ? 2 : pos; //mark for month change after 29 days
+            } else { //if normal year
+              pos=now->d > 28 ? 2 : pos; //mark for month change after 28 days
+            }
+            break;
+          case 4: //april
+          case 6: //june
+          case 9: //september
+          case 11: //november
             pos=now->d > 30 ? 2 : pos; //mark for month change after 30 days
-          }
+            break;
+          default: //january, march, may, july, august, october, december
+            pos=now->d > 31 ? 2 : pos; //mark for month change after 31 days            
+            break;
         }
       }
     }

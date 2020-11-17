@@ -60,20 +60,24 @@ void setTimeSwitch(enum set *toSet, date *now) {
       now->M>=12 ? now->M=1 : now->M++;
       break;
     case DAY:
-      now->d=now->d+1;
-      if (now->M==2){
-        if ((now->y % 4)==0){
-          pos=now->d > 29 ? 2 : pos;
-        } else {
-          pos=now->d > 28 ? 2 : pos;
-        }
-      } else {
-        if ((now->M==1) || (now->M==3) || (now->M==5) || (now->M==7)
-              || (now->M==8) || (now->M==10) || (now->M==12)){
-          pos=now->d > 31 ? 2 : pos;
-        } else {
-          pos=now->d > 30 ? 2 : pos;
-        }
+      now->d++;
+      switch (now->M){
+        case 2: //febrary
+          if ((now->y % 4)==0){ //if leap year
+            pos=now->d > 29 ? 2 : pos; //mark for month change after 29 days
+          } else { //if normal year
+            pos=now->d > 28 ? 2 : pos; //mark for month change after 28 days
+          }
+          break;
+        case 4: //april
+        case 6: //june
+        case 9: //september
+        case 11: //november
+          pos=now->d > 30 ? 2 : pos; //mark for month change after 30 days
+          break;
+        default: //january, march, may, july, august, october, december
+          pos=now->d > 31 ? 2 : pos; //mark for month change after 31 days            
+          break;
       }
       if (pos==2){
         now->d=1;
