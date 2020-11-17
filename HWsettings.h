@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef HWSETTINGS_H_INCLUDED
 #define HWSETTINGS_H_INCLUDED
 
@@ -14,3 +18,7 @@ const int dhtData = 4;
 const int dhtType = DHT_TYPE_11;
 
 #endif //HWSETTINGS_H_INCLUDED
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

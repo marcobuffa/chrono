@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef SWSETTINGS_H_INCLUDED
 #define SWSETTINGS_H_INCLUDED
 
@@ -33,3 +37,7 @@
 #define DEBOUNCE 200000
 
 #endif //SWSETTINGS_H_INCLUDED
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
