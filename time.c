@@ -1,8 +1,9 @@
 #include "time.h"
+#include "SWsettings.h"
 
 extern enum set toSet;
 extern enum mode actMode;
-const char dwn[7][3] = {"LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"};
+const char dwn[7][3] = {DAY1, DAY2, DAY3, DAY4, DAY5, DAY6, DAY7};
 
 //------------------------------
 //time string formatting routine
