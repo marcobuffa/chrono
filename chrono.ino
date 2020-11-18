@@ -9,6 +9,7 @@
 
 //global variables :-@
 int refresh = 1;
+int clean = 1;
 int dots = 1;
 int actPset = 0;
 int actDWset = 1;
@@ -149,7 +150,13 @@ void loop() {
     refresh = 1; //set display to be updated
   }
 
-  //if display needs update
+  //if display needs to be cleaned
+  if (clean){
+    clean = 0;
+    lcd.clear();
+  }
+
+  //if display needs to be updated
   if (refresh){
 
 #ifdef SERIALDEBUG
@@ -188,8 +195,8 @@ void loop() {
 
       //chrono programming mode
       case SETPROG:
-        sec2time(&setStart, interval[actDWset][actPset].start);
-        sec2time(&setStop, interval[actDWset][actPset].stop);
+        sec2time(&setStart, interval[actDWset-1][actPset].start);
+        sec2time(&setStop, interval[actDWset-1][actPset].stop);
         lcd.setCursor(0, 0); //set display position
         sprintf(program, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
         lcd.print(program); //print chrono programming string

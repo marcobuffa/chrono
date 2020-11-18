@@ -3,12 +3,14 @@
 
 extern int actPset;
 extern int actDWset;
+extern int clean;
 
 void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
   switch (*actMode) {
     
     case STD:
       *actMode = SETTIME;
+      clean = 1;
       break;
       
     case SETTIME:
@@ -34,6 +36,7 @@ void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
         default:
           *toSet = HOUR;
           *actMode = SETPROG;
+          clean = 1;
           break;
       }
       break;
@@ -69,6 +72,7 @@ void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
             } else {
               actDWset=1;
               *actMode = STD;
+              clean = 1;
             }
           }
           break;
@@ -80,6 +84,7 @@ void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
       
     default:
       *actMode = STD;
+      clean = 1;
       break;
   }
 }
