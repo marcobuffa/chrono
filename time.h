@@ -27,6 +27,7 @@ void formatDate(char *t, int y, int M, int d, int dw, int dots);
 void runCalendar(datetype *now);
 long int time2sec (datetype *now);
 void sec2time (datetype *now, long int s);
+void setTimeSwitch(enum set *toSet, datetype *now);
 
 
 #endif //TIME_H_INCLUDED

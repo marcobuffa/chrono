@@ -7,8 +7,8 @@ extern "C" {
 
 void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg);
 
-void setTimeSwitch(enum set *toSet, datetype *now);
-void setProgSwitch(enum progSet *toProg, onInterval *actInterval);
+
+
 
 #endif //ISR_H_INCLUDED
 

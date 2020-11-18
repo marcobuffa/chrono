@@ -132,7 +132,7 @@ void ISRAuxButton(){
 void loop() {
   float temperature, humidity;
   static unsigned long timestamp = millis();
-  char time[16], date[16], r[8], program[16], dw[4], temp[4], en[8];
+  char time[16], date[16], r[16], program[16], dw[4], temp[4], en[8];
 
   //try to get room measurement
   measureRoom(&temperature, &humidity);
