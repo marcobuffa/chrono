@@ -1,1 +1,1 @@
-# chrono
+# Arduino based programmable chronothermostat
