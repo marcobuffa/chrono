@@ -10,7 +10,7 @@ extern "C" {
 //#define SERIALDEBUG
 
 //Localization
-#define LOC_IT
+#define LOC_EN
 
 #ifdef LOC_IT
   #define DAY1 "LUN"
@@ -20,6 +20,9 @@ extern "C" {
   #define DAY5 "VEN"
   #define DAY6 "SAB"
   #define DAY7 "DOM"
+
+  #define EN_ED "ATTIVO"
+  #define DIS_ED "NON ATT"
 #endif //LOC_IT
 
 #ifdef LOC_EN
@@ -30,6 +33,9 @@ extern "C" {
   #define DAY5 "THU"
   #define DAY6 "FRI"
   #define DAY7 "SAT"
+
+  #define EN_ED "ENABLE"
+  #define DIS_ED "DISABLE"
 #endif //LOC_EN
 
 //Physical buttons debounce time (us)

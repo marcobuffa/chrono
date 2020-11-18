@@ -53,7 +53,7 @@ void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots){
 void formatEn(char *t, onInterval *actInterval, int dots){
   char en[7];
   
-  actInterval->enabled ? strcpy (en, "ATTIVO") : strcpy(en, "NON ATT");
+  actInterval->enabled ? strcpy (en, EN_ED) : strcpy(en, DIS_ED);
   
   //if programming mode, enable digit flashing using dots as pacemaker
   if (actMode==SETPROG) {
