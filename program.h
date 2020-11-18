@@ -17,6 +17,7 @@ typedef struct {
 
 void formatDW(char *t, int dw);
 void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots);
+void formatTemp(char *t, int actPset, onInterval *actInterval, int dots);
 
 #endif //PROGRAM_H_INCLUDED
 

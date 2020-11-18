@@ -23,20 +23,21 @@ void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots){
     //depending on currently setting time field
     switch (toProg) {
       case STARTHOUR:
-        dots ? sprintf(t, "P%d:   :%02d->%02d:%02d", actPset+1, setStart.m, setStop.h, setStop.m) : 
-                sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
+        dots ? sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m) :
+                sprintf(t, "P%d:   :%02d->%02d:%02d", actPset+1, setStart.m, setStop.h, setStop.m);
         break;
       case STARTMINUTE:
-        dots ? sprintf(t, "P%d: %02d:  ->%02d:%02d", actPset+1, setStart.h, setStop.h, setStop.m) : 
-                sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
+        dots ? sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m) :
+                sprintf(t, "P%d: %02d:  ->%02d:%02d", actPset+1, setStart.h, setStop.h, setStop.m);
         break;
       case STOPHOUR:
-        dots ? sprintf(t, "P%d: %02d:%02d->  :%02d", actPset+1, setStart.h, setStart.m, setStop.m) : 
-                sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
+        dots ? sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m) :
+                sprintf(t, "P%d: %02d:%02d->  :%02d", actPset+1, setStart.h, setStart.m, setStop.m);
         break;
       case STOPMINUTE:
-        dots ? sprintf(t, "P%d: %02d:%02d->%02d:  ", actPset+1, setStart.h, setStart.m, setStop.h) : 
-                sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
+        dots ? sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m) :
+                sprintf(t, "P%d: %02d:%02d->%02d:  ", actPset+1, setStart.h, setStart.m, setStop.h);
+                
         break;
       default:
         sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
@@ -45,13 +46,24 @@ void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots){
   } else { //if standard operating mode
     ssprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
   }
-        
 
-  
-  
   return;
+}
 
-
-
-  
+void formatTemp(char *t, int actPset, onInterval *actInterval, int dots){
+  //if programming mode, enable digit flashing using dots as pacemaker
+  if (actMode==SETPROG) {
+    //depending on currently setting time field
+    switch (toProg) {
+      case TEMP:
+        dots ? sprintf(t, "%dC", (int)actInterval->temperature) :
+                sprintf(t, "   ");
+        break;
+      default:
+        sprintf(t, "%dC", (int)actInterval->temperature);
+        break;
+    }
+  } else {
+    sprintf(t, "%dC", (int)actInterval->temperature);
+  }
 }

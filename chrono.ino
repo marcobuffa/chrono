@@ -134,7 +134,7 @@ void ISRAuxButton(){
 void loop() {
   float temperature, humidity;
   static unsigned long timestamp = millis();
-  char time[16], date[16], r[8], program[8], dw[8];
+  char time[16], date[16], r[8], program[8], dw[4], temp[4];
 
   //try to get room measurement
   measureRoom(&temperature, &humidity);
@@ -200,6 +200,9 @@ void loop() {
         formatDW(dw, actDWset);
         lcd.setCursor(0, 1); //set display position
         lcd.print(dw);
+        formatTemp(temp, actPset, &interval[actDWset-1][actPset], dots);
+        lcd.setCursor(4, 1); //set display position
+        lcd.print(temp);
         break;
       
       default:
