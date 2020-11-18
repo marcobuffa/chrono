@@ -56,9 +56,6 @@ void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
           *toProg = STOPMINUTE;
           break;
         case STOPMINUTE:
-          *toProg = WEEKDAY;
-          break;
-        case WEEKDAY:
           *toProg = TEMP;
           break;
         case TEMP:

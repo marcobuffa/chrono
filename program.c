@@ -44,13 +44,34 @@ void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots){
         break;
     }
   } else { //if standard operating mode
-    ssprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
+    sprintf(t, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
   }
 
   return;
 }
 
-void formatTemp(char *t, int actPset, onInterval *actInterval, int dots){
+void formatEn(char *t, onInterval *actInterval, int dots){
+  char en[7];
+  
+  actInterval->enabled ? strcpy (en, "ATTIVO") : strcpy(en, "NON ATT");
+  
+  //if programming mode, enable digit flashing using dots as pacemaker
+  if (actMode==SETPROG) {
+    //depending on currently setting time field
+    switch (toProg) {
+      case ENABLED:
+        dots ? strcpy(t, en) : sprintf(t, "       ");
+        break;
+      default:
+        strcpy(t, en);
+        break;
+    }
+  } else {
+    strcpy(t, en);
+  }
+}
+
+void formatTemp(char *t, onInterval *actInterval, int dots){
   //if programming mode, enable digit flashing using dots as pacemaker
   if (actMode==SETPROG) {
     //depending on currently setting time field
