@@ -42,6 +42,8 @@ extern "C" {
 //Debounce is micros() implemented
 #define DEBOUNCE 200000
 
+#define HIST 1
+
 #endif //SWSETTINGS_H_INCLUDED
 
 #ifdef __cplusplus

@@ -2,10 +2,10 @@
 extern "C" {
 #endif
 
-#include "SWsettings.h"
-
 #ifndef TIME_H_INCLUDED
 #define TIME_H_INCLUDED
+
+#include "SWsettings.h"
 
 enum set {MINUTE, HOUR, DAY, DAYOFWEEK, MONTH, YEAR};
 enum mode {STD, SETTIME, SETPROG};

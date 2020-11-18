@@ -7,9 +7,6 @@ extern "C" {
 
 void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg);
 
-
-
-
 #endif //ISR_H_INCLUDED
 
 #ifdef __cplusplus

@@ -115,7 +115,8 @@ void ISRAuxButton(){
       case SETTIME:
         setTimeSwitch(&toSet, &now); //set date/time
         break;
-        
+
+      //programming mode
       case SETPROG:
         setProgSwitch(&toProg, &interval[actDWset-1][actPset]); //set programs
         break;
