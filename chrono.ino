@@ -43,6 +43,7 @@ void measureRoom(float *temperature, float *humidity)
   if(millis() - timestamp > 5000ul){
     if(dht_sensor.measure(temperature, humidity) == true){
       timestamp = millis();
+      shouldHeat(*temperature, &now, interval);
 
 #ifdef SERIALDEBUG
       //Serial.println("New room data!");
