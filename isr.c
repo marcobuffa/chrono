@@ -43,7 +43,7 @@ void mainMenuFSM(enum mode *actMode, enum set *toSet, enum progSet *toProg) {
       
     case SETPROG:
       switch (*toProg) {
-      case ENABLED:
+        case ENABLED:
           *toProg = STARTHOUR;
           break;
         case STARTHOUR:
@@ -135,4 +135,48 @@ void setTimeSwitch(enum set *toSet, datetype *now) {
     default:
       break;
   }
+
+  return;
+}
+
+void setProgSwitch(enum progSet *toProg, onInterval *actInterval) {
+
+  datetype auxDate;
+
+    switch (*toProg) {
+    case STARTHOUR:
+      sec2time(&auxDate, actInterval->start);
+      auxDate.s = 0;
+      auxDate.h>=23 ? auxDate.h = 0 : auxDate.h++;
+      actInterval->start = time2sec(&auxDate);
+      break;         
+    case STARTMINUTE:
+      sec2time(&auxDate, actInterval->start);
+      auxDate.s = 0;
+      auxDate.m>=59 ? auxDate.m = 0 : auxDate.m++;
+      actInterval->start = time2sec(&auxDate);
+      break;
+    case STOPHOUR:
+      sec2time(&auxDate, actInterval->stop);
+      auxDate.s = 0;
+      auxDate.h>=23 ? auxDate.h = 0 : auxDate.h++;
+      actInterval->stop = time2sec(&auxDate);
+      break;         
+    case STOPMINUTE:
+      sec2time(&auxDate, actInterval->stop);
+      auxDate.s = 0;
+      auxDate.h>=59 ? auxDate.m = 0 : auxDate.m++;
+      actInterval->stop = time2sec(&auxDate);
+      break;  
+    case TEMP:
+      actInterval->temperature>=30 ? actInterval->temperature=10 : actInterval->temperature++;
+      break;
+    case ENABLED:
+      actInterval->enabled = !actInterval->enabled;
+      break;
+    default:
+      break;
+  }
+
+  return;
 }

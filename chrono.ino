@@ -87,12 +87,6 @@ void ISRMenuButton(){
     
 #ifdef SERIALDEBUG
     Serial.println("ISRMenuButton!");
-    Serial.print("actPset = ");
-    Serial.print(actPset);
-    Serial.print(" - actDWset = ");
-    Serial.print(actDWset);
-    Serial.print(" - toProg = ");
-    Serial.println(toProg);
 #endif
 
   }
@@ -120,6 +114,10 @@ void ISRAuxButton(){
       //date & time setting mode
       case SETTIME:
         setTimeSwitch(&toSet, &now); //set date/time
+        break;
+        
+      case SETPROG:
+        setProgSwitch(&toProg, &interval[actDWset-1][actPset]); //set programs
         break;
         
       default:

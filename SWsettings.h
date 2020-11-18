@@ -10,7 +10,7 @@ extern "C" {
 //#define SERIALDEBUG
 
 //Localization
-#define LOC_EN
+#define LOC_IT
 
 #ifdef LOC_IT
   #define DAY1 "LUN"
@@ -21,7 +21,7 @@ extern "C" {
   #define DAY6 "SAB"
   #define DAY7 "DOM"
 
-  #define EN_ED "ATTIVO"
+  #define EN_ED "ATTIVO "
   #define DIS_ED "NON ATT"
 #endif //LOC_IT
 
@@ -34,7 +34,7 @@ extern "C" {
   #define DAY6 "FRI"
   #define DAY7 "SAT"
 
-  #define EN_ED "ENABLE"
+  #define EN_ED "ENABLE "
   #define DIS_ED "DISABLE"
 #endif //LOC_EN
 
