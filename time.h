@@ -2,11 +2,15 @@
 extern "C" {
 #endif
 
+#include "SWsettings.h"
+
 #ifndef TIME_H_INCLUDED
 #define TIME_H_INCLUDED
 
 enum set {MINUTE, HOUR, DAY, DAYOFWEEK, MONTH, YEAR};
 enum mode {STD, SETTIME, SETPROG};
+
+static const char dwn[7][3] = {DAY1, DAY2, DAY3, DAY4, DAY5, DAY6, DAY7};
 
 typedef struct {
   int s;
@@ -23,7 +27,7 @@ void formatDate(char *t, int y, int M, int d, int dw, int dots);
 void runCalendar(datetype *now);
 long int time2sec (datetype *now);
 void sec2time (datetype *now, long int s);
-void formatDW(char *t, int dw);
+
 
 #endif //TIME_H_INCLUDED
 

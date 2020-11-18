@@ -15,6 +15,9 @@ typedef struct {
   int enabled;
 } onInterval;
 
+void formatDW(char *t, int dw);
+void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots);
+
 #endif //PROGRAM_H_INCLUDED
 
 #ifdef __cplusplus

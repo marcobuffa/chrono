@@ -1,11 +1,8 @@
 #include "time.h"
-#include "SWsettings.h"
 #include "program.h"
 
 extern enum set toSet;
-extern enum set toProg;
 extern enum mode actMode;
-const char dwn[7][3] = {DAY1, DAY2, DAY3, DAY4, DAY5, DAY6, DAY7};
 
 //------------------------------
 //time string formatting routine
@@ -141,13 +138,5 @@ void sec2time (datetype *now, long int s) {
   t = s%(long)3600;
   now->m = t/(long)60;
   now->s = t%(long)60;
-  return;
-}
-
-//-------------------------------------
-//day of week string formatting routine
-//-------------------------------------
-void formatDW(char *t, int dw){
-  sprintf(t, "%c%c%c", dwn[dw-1][0], dwn[dw-1][1], dwn[dw-1][2]); //normal formatting with no flash
   return;
 }

@@ -134,8 +134,7 @@ void ISRAuxButton(){
 void loop() {
   float temperature, humidity;
   static unsigned long timestamp = millis();
-  char time[16], date[16], r[8], program[16], dw[8];
-  datetype setStart, setStop;
+  char time[16], date[16], r[8], program[8], dw[8];
 
   //try to get room measurement
   measureRoom(&temperature, &humidity);
@@ -195,10 +194,8 @@ void loop() {
 
       //chrono programming mode
       case SETPROG:
-        sec2time(&setStart, interval[actDWset-1][actPset].start);
-        sec2time(&setStop, interval[actDWset-1][actPset].stop);
+        formatProgTimes(program, actPset, &interval[actDWset-1][actPset], dots);
         lcd.setCursor(0, 0); //set display position
-        sprintf(program, "P%d: %02d:%02d->%02d:%02d", actPset+1, setStart.h, setStart.m, setStop.h, setStop.m);
         lcd.print(program); //print chrono programming string
         formatDW(dw, actDWset);
         lcd.setCursor(0, 1); //set display position
