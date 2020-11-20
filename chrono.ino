@@ -1,5 +1,6 @@
 #include <LiquidCrystal.h>
 #include <dht_nonblocking.h>
+#include <EEPROM.h>
 #include "time.h"
 #include "room.h"
 #include "program.h"
@@ -29,6 +30,7 @@ onInterval interval[7][3] = { //start, stop, dw, temp, enabled
             {{32400, 36000, 6, 19, 1},{ 39600, 43200, 6, 19, 0},{ 46800, 50400, 6, 19, 1}}, //SAB
             {{32400, 36000, 7, 19, 1},{ 39600, 43200, 7, 19, 0},{ 46800, 50400, 7, 19, 1}}  //DOM
 }; //ON intervals array (7 days x 3 intervals each days)
+unsigned long int elapsedNotSTD = 0;
 
 //instantiate display
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
@@ -56,6 +58,19 @@ void measureRoom(float *temperature, float *humidity){
   }
   return;
 }
+
+
+//void saveProgram(onInterval fullProg[7][3]){
+//  char *toSave = (char *)fullProg;
+//  int sizeToSave = sizeof(fullProg);
+//  int addr = 0;
+//
+//  while (addr<EEPROM.length() && addr<sizeToSave){
+//    EEPROM.write(addr, toSave[addr]);
+//  }
+//  
+//  return;
+//}
 
 //---------------------
 //Arduino SETUP routine
@@ -88,7 +103,8 @@ void ISRMenuButton(){
   
   if(micros() - last >= DEBOUNCE) {
     last = micros();
-
+    elapsedNotSTD = millis();
+    
     refresh = 1; //set display to be updated
 
     mainMenuFSM(&actMode, &toSet, &toProg); //navigate through modes of operation and date/time setting
@@ -108,7 +124,8 @@ void ISRAuxButton(){
   
   if(micros() - last >= DEBOUNCE) {
     last = micros();
-
+    elapsedNotSTD = millis();
+    
 #ifdef SERIALDEBUG
     //Serial.println("ISRAuxButton!");
 #endif
@@ -176,6 +193,7 @@ void loop() {
       
       //standard mode
       case STD:
+        elapsedNotSTD = millis();
         formatRoom(r, temperature, humidity); //format room measurement string
         lcd.setCursor(0, 0); //set display position
         lcd.print(r); //print room measurement
@@ -189,6 +207,10 @@ void loop() {
 
       //date & time setting mode
       case SETTIME:
+        if( millis() - elapsedNotSTD >=15000ul ){
+          actMode = STD;
+          clean = 1;
+        }
         lcd.setCursor(0, 0); //set display position
         lcd.print("Set d/o   "); //print date & time setting string
         formatTime(time, now.h, now.m, now.s, dots); //format time string
@@ -201,6 +223,10 @@ void loop() {
 
       //chrono programming mode
       case SETPROG:
+        if( millis() - elapsedNotSTD >=15000ul ){
+          actMode = STD;
+          clean = 1;
+        }
         formatProgTimes(program, actPset, &interval[actDWset-1][actPset], dots);
         lcd.setCursor(0, 0); //set display position
         lcd.print(program); //print chrono programming string

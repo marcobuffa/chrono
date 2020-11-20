@@ -32,7 +32,7 @@ int shouldHeat(float actTemperature, datetype *now, onInterval fullProg[7][3]){
       if (fullProg[now->dw-1][i].enabled){ //if the interval is active
         found = 1;
 #ifdef SERIALDEBUG
-        sprintf(debug, "day=%c%c%c, P=%d, act=%d, set=%d, enabled=%d", dwn[now->dw-1][0], dwn[now->dw-1][1], dwn[now->dw-1][2], i+1, (int)actTemperature, (int)fullProg[now->dw-1][i].temperature, fullProg[now->dw-1][i].enabled);
+        sprintf(debug, "Found: day=%c%c%c, P=%d, act=%d, set=%d, enabled=%d", dwn[now->dw-1][0], dwn[now->dw-1][1], dwn[now->dw-1][2], i+1, (int)actTemperature, (int)fullProg[now->dw-1][i].temperature, fullProg[now->dw-1][i].enabled);
 #endif        
         if (actTemperature<fullProg[now->dw-1][i].temperature){ //if it's colder that the required temperature
           on = 1; //enable heater system
@@ -42,8 +42,6 @@ int shouldHeat(float actTemperature, datetype *now, onInterval fullProg[7][3]){
       }
     }
   }
-
-
 
   if (found){
     return (on);
