@@ -52,30 +52,46 @@ void measureRoom(float *temperature, float *humidity){
       digitalWrite(heat, heater);
       
 #ifdef SERIALDEBUG
-      Serial.println(debug);
+      //Serial.println(debug);
 #endif
     }
   }
   return;
 }
 
+void saveTime(){
+  char *toSave;
+  toSave = (char *)&now;
+  int sizeToSave = sizeof(now);
+  int i;
+  
+  for (i=0; i<sizeToSave; i++){
+    EEPROM.update(i, toSave[i]);
+  }
 
-//void saveProgram(onInterval fullProg[7][3]){
-//  char *toSave = (char *)fullProg;
-//  int sizeToSave = sizeof(fullProg);
-//  int addr = 0;
-//
-//  while (addr<EEPROM.length() && addr<sizeToSave){
-//    EEPROM.write(addr, toSave[addr]);
-//  }
-//  
-//  return;
-//}
+  return;
+}
+
+void saveProgram(){
+  char *toSave;
+  toSave = (char *)&interval;
+  int sizeToSave = sizeof(interval);
+  int i;
+  
+  for (i=0; i<sizeToSave; i++){
+    EEPROM.update(i+512, toSave[i]);
+  }
+  
+  return;
+}
 
 //---------------------
 //Arduino SETUP routine
 //---------------------
 void setup() {
+  char *timeToRetrieve;
+  timeToRetrieve = (char *)&now;
+  int i;
   
   //init buttons & ISRs
   pinMode(button2, INPUT_PULLUP);
@@ -93,6 +109,11 @@ void setup() {
 
   //init 16x2 display
   lcd.begin(16, 2);
+
+  //retrieve last time saved from EEPROM
+  for (i=0; i<sizeof(now); i++){
+    timeToRetrieve[i] = EEPROM.read(i);
+  }
 }
 
 //---------------
@@ -210,6 +231,7 @@ void loop() {
         if( millis() - elapsedNotSTD >= STDTIMEOUT ){
           actMode = STD;
           clean = 1;
+          saveTime();
         }
         lcd.setCursor(0, 0); //set display position
         lcd.print("Set d/o   "); //print date & time setting string
@@ -226,6 +248,7 @@ void loop() {
         if( millis() - elapsedNotSTD >= STDTIMEOUT ){
           actMode = STD;
           clean = 1;
+          saveProgram();
         }
         formatProgTimes(program, actPset, &interval[actDWset-1][actPset], dots);
         lcd.setCursor(0, 0); //set display position
