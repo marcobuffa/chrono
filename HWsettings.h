@@ -10,6 +10,8 @@ extern "C" {
 const int button2 = 2;
 const int button3 = 3;
 
+const int heat = 13;
+
 //Hitachi like 16x2 pin connection (4 bit mode)
 const int rs=7, en=8, d4=9, d5=10, d6=11, d7=12;
 

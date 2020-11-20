@@ -8,6 +8,9 @@
 #include "SWsettings.h"
 
 //global variables :-@
+#ifdef SERIALDEBUG
+char debug[50];
+#endif
 int refresh = 1;
 int clean = 1;
 int dots = 1;
@@ -16,15 +19,15 @@ int actDWset = 1;
 enum mode actMode = STD;
 enum set toSet = HOUR;
 enum progSet toProg = ENABLED;
-datetype now{30, 59, 15, 12, 4, 11, 2020}; //initial date (guess why...)
+datetype now{30, 40, 14, 20, 5, 11, 2020}; //initial date (guess why...)
 onInterval interval[7][3] = { //start, stop, dw, temp, enabled
-            {{32400, 36000, 1, 19, 1},{ 39600, 43200, 1, 19, 0},{ 46800, 50400, 1, 19, 1}},
-            {{32400, 36000, 2, 19, 1},{ 39600, 43200, 2, 19, 0},{ 46800, 50400, 2, 19, 1}},
-            {{32400, 36000, 3, 19, 1},{ 39600, 43200, 3, 19, 0},{ 46800, 50400, 3, 19, 1}},
-            {{32400, 36000, 4, 19, 1},{ 39600, 43200, 4, 19, 0},{ 46800, 50400, 4, 19, 1}},
-            {{32400, 36000, 5, 19, 1},{ 39600, 43200, 5, 19, 0},{ 46800, 50400, 5, 19, 1}},
-            {{32400, 36000, 6, 19, 1},{ 39600, 43200, 6, 19, 0},{ 46800, 50400, 6, 19, 1}},
-            {{32400, 36000, 7, 19, 1},{ 39600, 43200, 7, 19, 0},{ 46800, 50400, 7, 19, 1}}        
+            {{32400, 36000, 1, 19, 1},{ 39600, 43200, 1, 19, 0},{ 46800, 50400, 1, 19, 1}}, //LUN
+            {{32400, 36000, 2, 19, 1},{ 39600, 43200, 2, 19, 0},{ 46800, 50400, 2, 19, 1}}, //MAR
+            {{32400, 36000, 3, 19, 1},{ 39600, 43200, 3, 19, 0},{ 46800, 50400, 3, 19, 1}}, //MER
+            {{32400, 36000, 4, 19, 1},{ 39600, 43200, 4, 19, 0},{ 46800, 50400, 4, 19, 1}}, //GIO
+            {{32400, 36000, 5, 19, 1},{ 39600, 79200, 5, 23, 1},{ 46800, 50400, 5, 19, 0}}, //VEN
+            {{32400, 36000, 6, 19, 1},{ 39600, 43200, 6, 19, 0},{ 46800, 50400, 6, 19, 1}}, //SAB
+            {{32400, 36000, 7, 19, 1},{ 39600, 43200, 7, 19, 0},{ 46800, 50400, 7, 19, 1}}  //DOM
 }; //ON intervals array (7 days x 3 intervals each days)
 
 //instantiate display
@@ -36,17 +39,18 @@ DHT_nonblocking dht_sensor(dhtData, dhtType);
 //------------------------
 //room measurement routine
 //------------------------
-void measureRoom(float *temperature, float *humidity)
-{
+void measureRoom(float *temperature, float *humidity){
   static unsigned long timestamp = millis();
+  int heater;
 
   if(millis() - timestamp > 5000ul){
     if(dht_sensor.measure(temperature, humidity) == true){
       timestamp = millis();
-      shouldHeat(*temperature, &now, interval);
-
+      heater = shouldHeat(*temperature, &now, interval);
+      digitalWrite(heat, heater);
+      
 #ifdef SERIALDEBUG
-      //Serial.println("New room data!");
+      Serial.println(debug);
 #endif
     }
   }
@@ -63,6 +67,9 @@ void setup() {
   pinMode(button3, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(button2), ISRMenuButton, FALLING);
   attachInterrupt(digitalPinToInterrupt(button3), ISRAuxButton, FALLING);
+
+  pinMode(heat, OUTPUT);
+  digitalWrite(heat, 0);
   
   //init serial debug port
 #ifdef SERIALDEBUG
@@ -87,7 +94,7 @@ void ISRMenuButton(){
     mainMenuFSM(&actMode, &toSet, &toProg); //navigate through modes of operation and date/time setting
     
 #ifdef SERIALDEBUG
-    Serial.println("ISRMenuButton!");
+    //Serial.println("ISRMenuButton!");
 #endif
 
   }
@@ -103,7 +110,7 @@ void ISRAuxButton(){
     last = micros();
 
 #ifdef SERIALDEBUG
-    Serial.println("ISRAuxButton!");
+    //Serial.println("ISRAuxButton!");
 #endif
 
     refresh = 1; //set display to be updated
