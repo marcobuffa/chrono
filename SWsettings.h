@@ -7,7 +7,7 @@ extern "C" {
 
 //define to enable serial port initialization
 //and basic operation log
-#define SERIALDEBUG
+//#define SERIALDEBUG
 
 //Localization
 #define LOC_IT
@@ -41,6 +41,8 @@ extern "C" {
 //Physical buttons debounce time (us)
 //Debounce is micros() implemented
 #define DEBOUNCE 200000
+
+#define STDTIMEOUT 15000
 
 #define HIST 1
 

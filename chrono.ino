@@ -207,7 +207,7 @@ void loop() {
 
       //date & time setting mode
       case SETTIME:
-        if( millis() - elapsedNotSTD >=15000ul ){
+        if( millis() - elapsedNotSTD >= STDTIMEOUT ){
           actMode = STD;
           clean = 1;
         }
@@ -223,7 +223,7 @@ void loop() {
 
       //chrono programming mode
       case SETPROG:
-        if( millis() - elapsedNotSTD >=15000ul ){
+        if( millis() - elapsedNotSTD >= STDTIMEOUT ){
           actMode = STD;
           clean = 1;
         }
