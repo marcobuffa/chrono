@@ -59,18 +59,7 @@ void measureRoom(float *temperature, float *humidity){
   return;
 }
 
-void saveTime(){
-  char *toSave;
-  toSave = (char *)&now;
-  int sizeToSave = sizeof(now);
-  int i;
-  
-  for (i=0; i<sizeToSave; i++){
-    EEPROM.update(i, toSave[i]);
-  }
 
-  return;
-}
 
 void saveProgram(){
   char *toSave;
@@ -231,7 +220,7 @@ void loop() {
         if( millis() - elapsedNotSTD >= STDTIMEOUT ){
           actMode = STD;
           clean = 1;
-          saveTime();
+          saveTime(&now);
         }
         lcd.setCursor(0, 0); //set display position
         lcd.print("Set d/o   "); //print date & time setting string

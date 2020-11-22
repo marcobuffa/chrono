@@ -24,6 +24,6 @@ void runCalendar(datetype *now);
 long int time2sec (datetype *now);
 void sec2time (datetype *now, long int s);
 void setTimeSwitch(enum set *toSet, datetype *now);
-
+void saveTime(datetype *timeToSave);
 
 #endif //TIME_H_INCLUDED

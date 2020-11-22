@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <EEPROM.h>
 #include "time.h"
 #include "program.h"
 
@@ -193,6 +194,22 @@ void setTimeSwitch(enum set *toSet, datetype *now) {
       break;
     default:
       break;
+  }
+
+  return;
+}
+
+//--------------------------------
+//Current date&time saving routine
+//--------------------------------
+void saveTime(datetype *timeToSave){
+  char *toSave;
+  toSave = (char *)timeToSave;
+  int sizeToSave = sizeof(*timeToSave);
+  int i;
+  
+  for (i=0; i<sizeToSave; i++){
+    EEPROM.update(i, toSave[i]);
   }
 
   return;
