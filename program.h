@@ -6,18 +6,9 @@ enum progSet {STARTMINUTE, STARTHOUR, STOPMINUTE, STOPHOUR, TEMP, ENABLED};
 typedef struct {
   long int start;
   long int stop;
-  int dw;
   float temperature; 
   int enabled;
 } onInterval;
-
-typedef struct {
-  onInterval interval[3];
-} dailyProg;
-
-typedef struct {
-  dailyProg day[7];
-} weeklyProg;
 
 void formatDW(char *t, int dw);
 void formatProgTimes(char *t, int actPset, onInterval *actInterval, int dots);

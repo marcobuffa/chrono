@@ -38,7 +38,7 @@
 //Debounce is micros() implemented
 #define DEBOUNCE 200000
 
-#define STDTIMEOUT 15000
+#define STDTIMEOUT 5000
 
 #define HIST 1
 
