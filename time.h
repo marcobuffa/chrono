@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef TIME_H_INCLUDED
 #define TIME_H_INCLUDED
 
@@ -31,7 +27,3 @@ void setTimeSwitch(enum set *toSet, datetype *now);
 
 
 #endif //TIME_H_INCLUDED
-
-#ifdef __cplusplus
-} // extern "C"
-#endif

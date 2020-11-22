@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef PROGRAM_H_INCLUDED
 #define PROGRAM_H_INCLUDED
 
@@ -30,7 +26,3 @@ void formatTemp(char *t, onInterval *actInterval, int dots);
 void setProgSwitch(enum progSet *toProg, onInterval *actInterval);
 
 #endif //PROGRAM_H_INCLUDED
-
-#ifdef __cplusplus
-} // extern "C"
-#endif

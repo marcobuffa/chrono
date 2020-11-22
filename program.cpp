@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #include "program.h"
 #include "SWsettings.h"
 #include "time.h"
@@ -66,7 +68,7 @@ void formatEn(char *t, onInterval *actInterval, int dots){
     //depending on currently setting time field
     switch (toProg) {
       case ENABLED:
-        dots ? strcpy(t, en) : sprintf(t, "        ");
+        dots ? strcpy(t, en) : strcpy(t, "        ");
         break;
       default:
         strcpy(t, en);

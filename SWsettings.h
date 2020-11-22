@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef SWSETTINGS_H_INCLUDED
 #define SWSETTINGS_H_INCLUDED
 
@@ -47,7 +43,3 @@ extern "C" {
 #define HIST 1
 
 #endif //SWSETTINGS_H_INCLUDED
-
-#ifdef __cplusplus
-} // extern "C"
-#endif

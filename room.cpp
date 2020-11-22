@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "room.h"
 #include "time.h"
 #include "program.h"
